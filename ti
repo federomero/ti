@@ -29,7 +29,7 @@ task = ARGV.dup.join(' ')
 
 mins = 0
 
-system("echo i `date '+%Y-%m-%d %H:%M:%S'` #{client}  #{task} >> $TIMELOG")
+system("echo \"i `date '+%Y-%m-%d %H:%M:%S'` #{client}  #{task}\" >> $TIMELOG")
 
 while true
   begin
