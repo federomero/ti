@@ -1,0 +1,52 @@
+#! /usr/bin/env ruby
+
+unless ARGV.length > 0
+  puts "Usage: ti <client> [task]"
+  exit 1
+end
+
+require 'rubygems'
+
+begin
+  require 'rainbow'
+rescue LoadError
+  class String
+    def color arg
+      self
+    end
+  end
+end
+
+begin
+  require 'growl'
+  use_growl = Growl.installed?
+rescue LoadError
+  use_growl = false
+end
+
+client = ARGV.shift.dup
+task = ARGV.dup.join(' ')
+
+mins = 0
+
+system("echo i `date '+%Y-%m-%d %H:%M:%S'` #{client}  #{task} >> $TIMELOG")
+
+while true
+  begin
+    msg = "Working for #{client.color(:green)}"
+    msg += " on #{task.color(:green)}" if task != ''
+    msg += " for #{mins.to_s.color(:red)} minutes"
+    puts msg
+
+    if mins % 30 == 0 && use_growl
+      Growl.notify_info task, :title => "Working #{mins} minutes for #{client}"
+    end
+
+    mins += 1
+    sleep(60)
+  rescue SystemExit, Interrupt
+    system("echo o `date '+%Y-%m-%d %H:%M:%S'` >> $TIMELOG")
+    puts "Done with #{client.color(:green)}"
+    exit 0
+  end
+end
