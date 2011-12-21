@@ -1,6 +1,6 @@
 # ti
 
-Simple command-line time tracker. Outputs to [ledeger's](http://ledger-cli.org/) [timelog format](http://ledger-cli.org/2.6/ledger.html#Using-timeclock-to-record-billable-time)
+Simple command-line time tracker. Outputs to [ledger's](http://ledger-cli.org/) [timelog format](http://ledger-cli.org/2.6/ledger.html#Using-timeclock-to-record-billable-time)
 
 ## Usage
 
