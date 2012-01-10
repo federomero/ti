@@ -1,0 +1,16 @@
+#compdef ti
+
+_ti_clients() {
+  local curcontext="$curcontext" state line
+  typeset -A opt_args
+
+  _arguments \
+    '1: :->client'\
+    '*: :->task'
+
+  case $state in
+    client)
+      compadd "$@" `awk '/^i/ {print $4}' $TIMELOG | sort | uniq | grep -i "$a"`
+      ;;
+  esac 
+}
