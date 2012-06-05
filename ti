@@ -5,48 +5,63 @@ unless ARGV.length > 0
   exit 1
 end
 
-require 'rubygems'
-
-begin
-  require 'rainbow'
-rescue LoadError
-  class String
-    def color arg
-      self
-    end
-  end
-end
-
-begin
-  require 'growl'
-  use_growl = Growl.installed?
-rescue LoadError
-  use_growl = false
-end
-
 client = ARGV.shift.dup
 task = ARGV.dup.join(' ')
 
-mins = 0
+require 'rubygems'
 
-system("echo \"i `date '+%Y-%m-%d %H:%M:%S'` #{client}  #{task}\" >> $TIMELOG")
+module Ti
+  Timer = Object.new
+  class << Timer
 
-while true
-  begin
-    msg = "Working for #{client.color(:green)}"
-    msg += " on #{task.color(:green)}" if task != ''
-    msg += " for #{mins.to_s.color(:red)} minutes"
-    puts msg
+    attr_accessor :client, :task, :minutes
 
-    if mins % 30 == 0 && use_growl
-      Growl.notify_info task, :title => "Working #{mins} minutes for #{client}"
+    def every n, &block
+      on :minutes do
+        block.call if @minutes % n == 0
+      end
     end
 
-    mins += 1
-    sleep(60)
-  rescue SystemExit, Interrupt
-    system("echo o `date '+%Y-%m-%d %H:%M:%S'` >> $TIMELOG")
-    puts "Done with #{client.color(:green)}"
-    exit 0
+    def on name, &block
+      @callbacks ||= {}
+      @callbacks[name] ||= []
+      @callbacks[name] << block
+    end
+
+    def finish
+      run_callbacks(:finish)
+      exit 0
+    end
+
+    def start
+      @minutes = -1
+      run_callbacks(:start)
+      loop do
+        begin
+          @minutes += 1
+          start_time = Time.now
+          run_callbacks(:minutes)
+          elapsed = Time.now - start_time
+          sleep([60 - elapsed, 0].max)
+        rescue SystemExit, Interrupt
+          finish
+        end
+      end
+    end
+
+    protected
+
+    def run_callbacks name
+      @callbacks[name].each(&:call) if @callbacks[name]
+    end
   end
 end
+
+Ti::Timer.client = client
+Ti::Timer.task = task
+
+plugins_dir = File.join(File.dirname(File.realpath(__FILE__)), "plugins/*.rb")
+Dir[plugins_dir].each {|file| require file }
+
+Ti::Timer.start
+
