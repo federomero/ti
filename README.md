@@ -1,6 +1,6 @@
 # ti
 
-Simple command-line timer. Doesn't do much by itself but is extensible via plugins.
+Simple command-line timer. Doesn't do much by itself, but is extensible via plugins.
 
 ## Usage
 
@@ -33,6 +33,10 @@ The plugins folder can be especified with the `TI_PLUGINS_DIR` environment varia
 [ledger](https://gist.github.com/3870155): Outputs time entries in [ledger's](http://ledger-cli.org/) [timelog format](http://ledger-cli.org/2.6/ledger.html#Using-timeclock-to-record-billable-time).
 
     curl https://raw.github.com/gist/3870155 > ~/.ti/ledger.rb
+
+[git](https://gist.github.com/3871908): Adds git commit messages to the task description.
+
+    curl https://raw.github.com/gist/3871908> ~/.ti/git.rb
 
 [growl](https://gist.github.com/3870150): Display growl notifications.
 
