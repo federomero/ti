@@ -6,7 +6,7 @@ Simple command-line timer. Doesn't do much by itself, but is extensible via plug
 
 On the command line run:
 
-    ti <client> <task description>
+    ti <project> <task description>
 
 Example:
 

@@ -1,11 +1,11 @@
 #! /usr/bin/env ruby
 
 unless ARGV.length > 0
-  puts "Usage: ti <client> [task]"
+  puts "Usage: ti <project> [task]"
   exit 1
 end
 
-client = ARGV.shift.dup
+project = ARGV.shift.dup
 task = ARGV.dup.join(' ')
 
 require 'rubygems'
@@ -17,7 +17,7 @@ module Ti
   Timer = Object.new
   class << Timer
 
-    attr_accessor :client, :task, :start_time, :end_time
+    attr_accessor :project, :task, :start_time, :end_time
 
     def start_time= time
       time = DateTime.parse(time).to_time if time.is_a? String
@@ -87,7 +87,7 @@ module Ti
   end
 end
 
-Ti::Timer.client = client
+Ti::Timer.project = project
 Ti::Timer.task = task
 
 Ti::Timer.config.plugins_dir = ENV['TI_PLUGINS_DIR'] || File.join(ENV['HOME'], '.ti')
