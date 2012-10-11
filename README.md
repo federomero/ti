@@ -22,29 +22,29 @@ The plugins folder can be especified with the `TI_PLUGINS_DIR` environment varia
 
 ### Example plugins
 
-[console](https://gist.github.com/3870136): Outputs passing minutes on stdout.
+[console](https://github.com/federomero/ti-plugins/blob/master/console.rb): Outputs passing minutes on stdout.
 
-    curl https://raw.github.com/gist/3870136 > ~/.ti/console.rb
+    curl https://raw.github.com/federomero/ti-plugins/master/console.rb > ~/.ti/console.rb
 
-[reviewer](https://gist.github.com/3870878): Allows to review time entries before finishing.
+[reviewer](https://github.com/federomero/ti-plugins/blob/master/reviewer.rb): Allows to review time entries before finishing.
 
-    curl https://raw.github.com/gist/3870878 > ~/.ti/reviewer.rb
+    curl https://raw.github.com/federomero/ti-plugins/master/reviewer.rb > ~/.ti/reviewer.rb
 
-[ledger](https://gist.github.com/3870155): Outputs time entries in [ledger's](http://ledger-cli.org/) [timelog format](http://ledger-cli.org/2.6/ledger.html#Using-timeclock-to-record-billable-time).
+[ledger](https://github.com/federomero/ti-plugins/blob/master/ledger.rb): Outputs time entries in [ledger's](http://ledger-cli.org/) [timelog format](http://ledger-cli.org/2.6/ledger.html#Using-timeclock-to-record-billable-time).
 
-    curl https://raw.github.com/gist/3870155 > ~/.ti/ledger.rb
+    curl https://raw.github.com/federomero/ti-plugins/master/ledger.rb > ~/.ti/ledger.rb
 
-[git](https://gist.github.com/3871908): Adds git commit messages to the task description.
+[git](https://github.com/federomero/ti-plugins/blob/master/git.rb): Adds git commit messages to the task description.
 
-    curl https://raw.github.com/gist/3871908> ~/.ti/git.rb
+    curl https://raw.github.com/federomero/ti-plugins/master/git.rb > ~/.ti/git.rb
 
-[growl](https://gist.github.com/3870150): Display growl notifications.
+[growl](https://github.com/federomero/ti-plugins/blob/master/growl.rb): Display growl notifications.
 
-    curl https://raw.github.com/gist/3870150 > ~/.ti/growl.rb
+    curl https://raw.github.com/federomero/ti-plugins/master/growl.rb > ~/.ti/growl.rb
 
-[terminal-notifier](https://gist.github.com/3870176): Display mountain lion notifications. Requires [terminal-notifier](https://github.com/alloy/terminal-notifier).
+[terminal-notifier](https://github.com/federomero/ti-plugins/blob/master/terminal-notifier.rb): Display mountain lion notifications. Requires [terminal-notifier](https://github.com/alloy/terminal-notifier).
 
-    curl https://raw.github.com/gist/3870176 > ~/.ti/terminal-notifier.rb
+    curl https://raw.github.com/federomero/ti-plugins/master/terminal-notifier.rb > ~/.ti/terminal-notifier.rb
 
 ## API
 
