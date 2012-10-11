@@ -19,6 +19,16 @@ module Ti
 
     attr_accessor :client, :task, :start_time, :end_time
 
+    def start_time= time
+      time = DateTime.parse(time).to_time if time.is_a? String
+      @start_time = time
+    end
+
+    def end_time= time
+      time = DateTime.parse(time).to_time if time.is_a? String
+      @end_time = time
+    end
+
     def config
       @config ||= OpenStruct.new
     end
