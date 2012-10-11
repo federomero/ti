@@ -9,43 +9,57 @@ client = ARGV.shift.dup
 task = ARGV.dup.join(' ')
 
 require 'rubygems'
+require 'ostruct'
+
+Infinity = 1.0/0
 
 module Ti
   Timer = Object.new
   class << Timer
 
-    attr_accessor :client, :task, :minutes
+    attr_accessor :client, :task, :start_time, :end_time
 
-    def every n, &block
-      on :minutes do
+    def config
+      @config ||= OpenStruct.new
+    end
+
+    def every n, priority = Infinity, &block
+      on :minutes, priority do
         block.call if minutes % n == 0
       end
     end
 
-    def on name, &block
+    def on name, priority = Infinity, &block
       callbacks[name] ||= []
-      callbacks[name] << block
+      callbacks[name] << [block, priority]
     end
 
     def callbacks
       @callbacks ||= {}
     end
 
+    def seconds
+      (Time.now - self.start_time).round
+    end
+
+    def minutes
+      (seconds.to_f / 60).round
+    end
 
     def finish
+      self.end_time = Time.now
       run_callbacks(:finish)
       exit 0
     end
 
     def start
-      self.minutes = -1
+      self.start_time = Time.now
       run_callbacks(:start)
       loop do
         begin
-          self.minutes += 1
-          start_time = Time.now
+          t = Time.now
           run_callbacks(:minutes)
-          elapsed = Time.now - start_time
+          elapsed = Time.now - t
           sleep([60 - elapsed, 0].max)
         rescue SystemExit, Interrupt
           finish
@@ -56,7 +70,9 @@ module Ti
     protected
 
     def run_callbacks name
-      callbacks[name].each(&:call) if callbacks[name]
+      if callbacks[name]
+        callbacks[name].sort_by(&:last).map(&:first).each(&:call)
+      end
     end
   end
 end
@@ -64,8 +80,8 @@ end
 Ti::Timer.client = client
 Ti::Timer.task = task
 
-plugins_dir = ENV['TI_PLUGINS_DIR'] || File.join(ENV['HOME'], '.ti')
-Dir[File.join(plugins_dir, "*.rb")].each {|file| require file }
-Dir[File.join(plugins_dir, "*/init.rb")].each {|file| require file }
+Ti::Timer.config.plugins_dir = ENV['TI_PLUGINS_DIR'] || File.join(ENV['HOME'], '.ti')
+Dir[File.join(Ti::Timer.config.plugins_dir, "*.rb")].each {|file| require file }
+Dir[File.join(Ti::Timer.config.plugins_dir, "*/init.rb")].each {|file| require file }
 
 Ti::Timer.start
