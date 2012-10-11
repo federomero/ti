@@ -1,33 +1,62 @@
 # ti
 
-Simple command-line time tracker. Outputs to [ledger's](http://ledger-cli.org/) [timelog format](http://ledger-cli.org/2.6/ledger.html#Using-timeclock-to-record-billable-time)
+Simple command-line timer. Doesn't do much by itself but is extensible via plugins.
 
 ## Usage
 
 On the command line run:
 
-    export TIMELOG=path_to_your.timelog
     ti <client> <task description>
 
 Example:
 
     ti Outbox Build amazing stuff
 
-This will append to `$TIMELOG` something like:
+To exit, simply kill the process.
 
-    i 2011-12-21 12:32:49 Outbox  Build amazing stuff
+## Plugins
 
-To exit use `ctrl+c`
+Place scripts on the plugins folder which will be loaded automatically by ti.
 
-This will append to `$TIMELOG` something like:
+The plugins folder can be especified with the `TI_PLUGINS_DIR` environment variable and defaults to `~/.ti`.
 
-    o 2011-12-20 12:35:56
+### Example plugins
 
-## Extras
+[console](https://gist.github.com/3870136): Outputs passing minutes on stdout.
 
-Run `gem install rainbow` for color output.
+    curl https://raw.github.com/gist/3870136 > ~/.ti/console.rb
 
-Run `gem install growl` for growl notifications.
+[ledger](https://gist.github.com/3870155): Outputs time entries in [ledger's](http://ledger-cli.org/) [timelog format](http://ledger-cli.org/2.6/ledger.html#Using-timeclock-to-record-billable-time)
+
+    curl https://raw.github.com/gist/3870155 > ~/.ti/ledger.rb
+
+[growl](https://gist.github.com/3870150): Display growl notifications.
+
+    curl https://raw.github.com/gist/3870150 > ~/.ti/growl.rb
+
+[terminal-notifier](https://gist.github.com/3870176): Display mountain lion notifications. Requires [terminal-notifier](https://github.com/alloy/terminal-notifier).
+
+    curl https://raw.github.com/gist/3870176 > ~/.ti/terminal-notifier.rb
+
+## API
+
+`Ti::Timer.every n { ... }`
+
+The block is executed every n minutes.
+
+Example:
+
+    Ti::Timer.every 30 do
+      puts "30 more minutes have passed working on #{Ti::Timer.task} (total: #{Ti::Timer.minutes})"
+    end
+
+`Ti::Timer.on :start { ... }`
+
+The block is executed when the time starts.
+
+`Ti::Timer.on :finish { ... }`
+
+The block is executed when the time ends.
 
 ## License
 

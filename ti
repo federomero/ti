@@ -18,15 +18,19 @@ module Ti
 
     def every n, &block
       on :minutes do
-        block.call if @minutes % n == 0
+        block.call if minutes % n == 0
       end
     end
 
     def on name, &block
-      @callbacks ||= {}
-      @callbacks[name] ||= []
-      @callbacks[name] << block
+      callbacks[name] ||= []
+      callbacks[name] << block
     end
+
+    def callbacks
+      @callbacks ||= {}
+    end
+
 
     def finish
       run_callbacks(:finish)
@@ -34,11 +38,11 @@ module Ti
     end
 
     def start
-      @minutes = -1
+      self.minutes = -1
       run_callbacks(:start)
       loop do
         begin
-          @minutes += 1
+          self.minutes += 1
           start_time = Time.now
           run_callbacks(:minutes)
           elapsed = Time.now - start_time
@@ -52,7 +56,7 @@ module Ti
     protected
 
     def run_callbacks name
-      @callbacks[name].each(&:call) if @callbacks[name]
+      callbacks[name].each(&:call) if callbacks[name]
     end
   end
 end
@@ -60,8 +64,8 @@ end
 Ti::Timer.client = client
 Ti::Timer.task = task
 
-plugins_dir = File.join(File.dirname(File.realpath(__FILE__)), "plugins/*.rb")
-Dir[plugins_dir].each {|file| require file }
+plugins_dir = ENV['TI_PLUGINS_DIR'] || File.join(ENV['HOME'], '.ti')
+Dir[File.join(plugins_dir, "*.rb")].each {|file| require file }
+Dir[File.join(plugins_dir, "*/init.rb")].each {|file| require file }
 
 Ti::Timer.start
-
