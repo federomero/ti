@@ -28,9 +28,9 @@ The plugins folder can be especified with the `TI_PLUGINS_DIR` environment varia
 
 [reviewer](https://gist.github.com/3870878): Allows to review time entries before finishing.
 
-    curl https://raw.github.com/gist/3870878> ~/.ti/reviewer.rb
+    curl https://raw.github.com/gist/3870878 > ~/.ti/reviewer.rb
 
-[ledger](https://gist.github.com/3870155): Outputs time entries in [ledger's](http://ledger-cli.org/) [timelog format](http://ledger-cli.org/2.6/ledger.html#Using-timeclock-to-record-billable-time)
+[ledger](https://gist.github.com/3870155): Outputs time entries in [ledger's](http://ledger-cli.org/) [timelog format](http://ledger-cli.org/2.6/ledger.html#Using-timeclock-to-record-billable-time).
 
     curl https://raw.github.com/gist/3870155 > ~/.ti/ledger.rb
 
